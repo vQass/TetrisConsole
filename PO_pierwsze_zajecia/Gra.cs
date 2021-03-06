@@ -25,7 +25,7 @@ namespace PO_pierwsze_zajecia
             {
                 for (int j = 0; j < plansza.tab.GetLength(0) + 2; j++)
                 {
-                    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                    Console.BackgroundColor = ConsoleColor.Green;
                     Console.Write("  ");
                 }
                 Console.WriteLine();
@@ -40,10 +40,33 @@ namespace PO_pierwsze_zajecia
                 for (int j = 0; j < plansza.tab.GetLength(0); j++)
                 {
                     if (plansza.tab[j, i] == 0)
-                        Console.BackgroundColor = ConsoleColor.Green;
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
                     else
                     {
-                        Console.BackgroundColor = ConsoleColor.Red;
+                        switch (plansza.tab[j, i])
+                        {
+                            case 1:
+                                Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                                break;
+                            case 2:
+                                Console.BackgroundColor = ConsoleColor.DarkGreen;
+                                break;
+                            case 3:
+                                Console.BackgroundColor = ConsoleColor.DarkRed;
+                                break;
+                            case 4:
+                                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                                break;
+                            case 5:
+                                Console.BackgroundColor = ConsoleColor.DarkYellow;
+                                break;
+                            case 6:
+                                Console.BackgroundColor = ConsoleColor.DarkCyan;
+                                break;
+                            case 7:
+                                Console.BackgroundColor = ConsoleColor.Yellow;
+                                break;
+                        }
                     }
 
                     Console.Write("  ");
@@ -53,40 +76,41 @@ namespace PO_pierwsze_zajecia
             Console.BackgroundColor = ConsoleColor.Black;
         }
 
-        public static void WyswietlPlansze2(Plansza plansza)
-        {
-            for (int i = 0; i < plansza.tab.GetLength(1); i++)
-            {
-                Console.SetCursorPosition(25, i);
-                for (int j = 0; j < plansza.tab.GetLength(0); j++)
-                {
-
-                    //if (plansza.tab[j, i] == 0)
-                    //    Console.BackgroundColor = ConsoleColor.Green;
-                    //else
-                    //{
-                    //    Console.BackgroundColor = ConsoleColor.Red;
-                    //}
-
-                    Console.Write(plansza.tab[j, i]);
-                }
-                Console.WriteLine();
-            }
-            Console.BackgroundColor = ConsoleColor.Black;
-        }
-
         public static void WyswietlKlocek(Klocek klocek, Plansza plansza)
         {
             int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            klocek.klocki.TryGetValue(klocek.Pozycja, out temp);
+            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
             for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
             {
                 for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
                 {
-                    Console.SetCursorPosition((klocek.RogTablicyX + i + 1) * 2, klocek.RogTablicyY + j);
                     if (temp[j, i] != 0)
                     {
-                        Console.BackgroundColor = ConsoleColor.Red;
+                    Console.SetCursorPosition((klocek.RogTablicyX + i + 1) * 2, klocek.RogTablicyY + j);
+                        switch (temp[j, i])
+                        {
+                            case 1:
+                                Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                                break;
+                            case 2:
+                                Console.BackgroundColor = ConsoleColor.DarkGreen;
+                                break;
+                            case 3:
+                                Console.BackgroundColor = ConsoleColor.DarkRed;
+                                break;
+                            case 4:
+                                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                                break;
+                            case 5:
+                                Console.BackgroundColor = ConsoleColor.DarkYellow;
+                                break;
+                            case 6:
+                                Console.BackgroundColor = ConsoleColor.DarkCyan;
+                                break;
+                            case 7:
+                                Console.BackgroundColor = ConsoleColor.Yellow;
+                                break;
+                        }
                         Console.Write("  ");
                         Console.BackgroundColor = ConsoleColor.Black;
                     }
@@ -99,15 +123,15 @@ namespace PO_pierwsze_zajecia
         public static void UsunKlocek(Klocek klocek, Plansza plansza)
         {
             int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            klocek.klocki.TryGetValue(klocek.poprzedniaPozycja, out temp);
+            TablicaKsztaltow.klocki.TryGetValue(klocek.poprzedniaPozycja, out temp);
             for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
             {
                 for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
                 {
-                    Console.SetCursorPosition((klocek.poprzedniRogTablicyX + i + 1) * 2, klocek.poprzedniRogTablicyY + j);
                     if (temp[j, i] != 0)
                     {
-                        Console.BackgroundColor = ConsoleColor.Green;
+                    Console.SetCursorPosition((klocek.poprzedniRogTablicyX + i + 1) * 2, klocek.poprzedniRogTablicyY + j);
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
                         Console.Write("  ");
                     }
                 }
@@ -169,19 +193,26 @@ namespace PO_pierwsze_zajecia
                 case Ruch.Dol:
                     wymaganyCzas = 50;
                     break;
+                case Ruch.Stoj:
+                    break;
+            }
+        }
+
+        public static void ObrotKlocka(Klocek klocek, Ruch ruch)
+        {
+            switch (ruch)
+            {
                 case Ruch.ObrotLewo:
-                    if (klocek.Pozycja == Pozycja.T4)
-                        klocek.Pozycja = Pozycja.T1;
+                    if ((int)klocek.Pozycja % 4 == 3)
+                        klocek.Pozycja -= 3;
                     else
                         klocek.Pozycja++;
                     break;
                 case Ruch.ObrotPrawo:
-                    if (klocek.Pozycja == Pozycja.T1)
-                        klocek.Pozycja = Pozycja.T4;
+                    if ((int)klocek.Pozycja % 4 == 0)
+                        klocek.Pozycja += 3;
                     else
                         klocek.Pozycja--;
-                    break;
-                case Ruch.Stoj:
                     break;
             }
         }
@@ -189,7 +220,7 @@ namespace PO_pierwsze_zajecia
         public static bool KolizjaBoki(Klocek klocek, Plansza plansza, Ruch ruch)
         {
             int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            klocek.klocki.TryGetValue(klocek.Pozycja, out temp);
+            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
             int wysokoscSprawdzania;
             int szerokoscSprawdzania;
             switch (ruch)
@@ -203,7 +234,7 @@ namespace PO_pierwsze_zajecia
                             {
                                 wysokoscSprawdzania = klocek.RogTablicyY + i;
                                 szerokoscSprawdzania = klocek.RogTablicyX + j - 1;
-                                if (j + klocek.RogTablicyX == 0 || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] == 1)
+                                if (j + klocek.RogTablicyX == 0 || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
                                 {
                                     return false;
                                 }
@@ -212,8 +243,8 @@ namespace PO_pierwsze_zajecia
                                 //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
                                 //Console.BackgroundColor = ConsoleColor.Cyan;
                                 //Console.WriteLine("  ");
-                                //System.Threading.Thread.Sleep(500);
-                                break; //sprawdzic czy dziala z breakiem przy gotowym tetrisie
+                                //System.Threading.Thread.Sleep(50);
+                                break;
 
                             }
                         }
@@ -228,7 +259,7 @@ namespace PO_pierwsze_zajecia
                             {
                                 wysokoscSprawdzania = klocek.RogTablicyY + i;
                                 szerokoscSprawdzania = klocek.RogTablicyX + j + 1;
-                                if (j + klocek.RogTablicyX + 1 == plansza.tab.GetLength(0) || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] == 1)
+                                if (j + klocek.RogTablicyX + 1 == plansza.tab.GetLength(0) || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
                                 {
                                     return false;
                                 }
@@ -237,8 +268,8 @@ namespace PO_pierwsze_zajecia
                                 //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
                                 //Console.BackgroundColor = ConsoleColor.Cyan;
                                 //Console.WriteLine("  ");
-                                //System.Threading.Thread.Sleep(500);
-                                break; //sprawdzic czy dziala z breakiem przy gotowym tetrisie
+                                //System.Threading.Thread.Sleep(50);
+                                break;
 
                             }
                         }
@@ -250,7 +281,7 @@ namespace PO_pierwsze_zajecia
         public static bool KolizjaDol(Klocek klocek, Plansza plansza)
         {
             int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            klocek.klocki.TryGetValue(klocek.Pozycja, out temp);
+            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
             int wysokoscSprawdzania;
             int szerokoscSprawdzania;
             for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
@@ -271,10 +302,54 @@ namespace PO_pierwsze_zajecia
             return true;
         }
 
+        public static bool KolizjaObrot(Klocek klocek, Plansza plansza, Ruch ruch)
+        {
+            Pozycja nastepnaPozycja = klocek.Pozycja;
+            switch (ruch)
+            {
+                case Ruch.ObrotLewo:
+                    if ((int)nastepnaPozycja % 4 == 3)
+                        nastepnaPozycja -= 3;
+                    else
+                        nastepnaPozycja++;
+                    break;
+                case Ruch.ObrotPrawo:
+                    if ((int)nastepnaPozycja % 4 == 0)
+                        nastepnaPozycja += 3;
+                    else
+                        nastepnaPozycja--;
+                    break;
+            }
+            int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
+            TablicaKsztaltow.klocki.TryGetValue(nastepnaPozycja, out temp);
+            int wysokoscSprawdzania = klocek.RogTablicyY;
+            int szerokoscSprawdzania = klocek.RogTablicyX;
+
+            for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
+            {
+                for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
+                {
+                    if(temp[i, j] != 0)
+                    {
+                    wysokoscSprawdzania = klocek.RogTablicyY + i;
+                    szerokoscSprawdzania = klocek.RogTablicyX + j;
+                    if (wysokoscSprawdzania >= plansza.tab.GetLength(1) || szerokoscSprawdzania >= plansza.tab.GetLength(0) || szerokoscSprawdzania <= -1 || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+                        return false;
+                        //sprawdzanie kolizji krok po kroku
+                        //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
+                        //Console.BackgroundColor = ConsoleColor.Cyan;
+                        //Console.Write("  ");
+                        //System.Threading.Thread.Sleep(1000);
+                    }     
+                }
+            }
+            return true;
+        }
+
         public static void DodajKlocekDoPlanszy(Klocek klocek, Plansza plansza)
         {
             int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            klocek.klocki.TryGetValue(klocek.Pozycja, out temp);
+            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
             for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
             {
                 for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
@@ -389,8 +464,50 @@ namespace PO_pierwsze_zajecia
             Console.SetCursorPosition((plansza.tab.GetLength(0) + 5) * 2, NapisTetris.napisTetris.GetLength(0) + 11);
             Console.WriteLine("                                  ");
         }
-    }
 
+        public static Pozycja WylosujKlocek()
+        {
+            Pozycja pozycja = Pozycja.T1;
+            Random rnd = new Random((int)DateTime.Now.Ticks);
+            int losowa = rnd.Next(1, 8);
+            switch (losowa)
+            {
+                case 1:
+                    pozycja = Pozycja.T1;
+                    break;
+                case 2:
+                    pozycja = Pozycja.S1;
+                    break;
+                case 3:
+                    pozycja = Pozycja.Z1;
+                    break;
+                case 4:
+                    pozycja = Pozycja.J1;
+                    break;
+                case 5:
+                    pozycja = Pozycja.L1;
+                    break;
+                case 6:
+                    pozycja = Pozycja.I1;
+                    break;
+                case 7:
+                    pozycja = Pozycja.O1;
+                    break;
+            }
+            return pozycja;
+        }
+
+        public static bool KoniecGry(Plansza plansza)
+        {
+            bool koniecGry = false;
+            for (int i = 0; i < plansza.tab.GetLength(0); i++)
+            {
+                if (plansza.tab[i, 1] != 0)
+                    koniecGry = true;
+            }
+            return !koniecGry;
+        }
+    }
 
 
     enum Ruch

@@ -19,43 +19,15 @@ namespace PO_pierwsze_zajecia
         private int _rogTablicyY = 0;   
         public int poprzedniRogTablicyX = 0;
         public int poprzedniRogTablicyY = 0;
-        //public Dictionary<Pozycja, int[,]> klocki = new Dictionary<Pozycja, int[,]>();
-        public Klocek(Plansza plansza)
+        public Klocek(Plansza plansza, Pozycja pozycja)
         {
             RogTablicyX = plansza.tab.GetLength(0) / 2 - Klocek.ROZMIAR_BLOKU / 2;
             poprzedniRogTablicyX = plansza.tab.GetLength(0) / 2 - Klocek.ROZMIAR_BLOKU / 2;
+            Pozycja = pozycja;
+        }
 
-            //klocki.Add(Pozycja.T1, new int[ROZMIAR_BLOKU, ROZMIAR_BLOKU]
-            //{
-            //    {0, 0, 0, 0},
-            //    {1, 1, 1, 0},
-            //    {0, 1, 0, 0},
-            //    {0, 0, 0, 0}
-            //});
-
-            //klocki.Add(Pozycja.T2, new int[ROZMIAR_BLOKU, ROZMIAR_BLOKU]
-            //{
-            //    {0, 0, 0, 0},
-            //    {1, 0, 0, 0},
-            //    {1, 1, 0, 0},
-            //    {1, 0, 0, 0}
-            //});
-
-            //klocki.Add(Pozycja.T3, new int[ROZMIAR_BLOKU, ROZMIAR_BLOKU]
-            //{
-            //    {0, 0, 0, 0},
-            //    {0, 0, 0, 0},
-            //    {0, 1, 0, 0},
-            //    {1, 1, 1, 0}
-            //});
-
-            //klocki.Add(Pozycja.T4, new int[ROZMIAR_BLOKU, ROZMIAR_BLOKU]
-            //{
-            //    {0, 0, 0, 0},
-            //    {0, 0, 1, 0},
-            //    {0, 1, 1, 0},
-            //    {0, 0, 1, 0}
-            //});
+        public Klocek()
+        {
 
         }
 

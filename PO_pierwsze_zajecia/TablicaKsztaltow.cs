@@ -11,12 +11,12 @@ namespace PO_pierwsze_zajecia
         public static void WypelnijTablice()
         {
             klocki.Add(Pozycja.T1, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
-{
+            {
                 {0, 0, 0, 0},
                 {0, 1, 0, 0},
                 {1, 1, 1, 0},
                 {0, 0, 0, 0}
-});
+            });
 
             klocki.Add(Pozycja.T2, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
             {
@@ -42,12 +42,12 @@ namespace PO_pierwsze_zajecia
                 {0, 1, 0, 0}
             });
             klocki.Add(Pozycja.S1, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
-{
+            {
                 {0, 0, 0, 0},
                 {0, 2, 2, 0},
                 {2, 2, 0, 0},
                 {0, 0, 0, 0}
-});
+            });
 
             klocki.Add(Pozycja.S2, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
             {
@@ -73,12 +73,12 @@ namespace PO_pierwsze_zajecia
                 {0, 0, 2, 0}
             });
             klocki.Add(Pozycja.Z1, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
-{
+            {
                 {0, 0, 0, 0},
                 {3, 3, 0, 0},
                 {0, 3, 3, 0},
                 {0, 0, 0, 0}
-});
+            });
 
             klocki.Add(Pozycja.Z2, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
             {
@@ -104,12 +104,12 @@ namespace PO_pierwsze_zajecia
                 {0, 3, 0, 0}
             });
             klocki.Add(Pozycja.J1, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
-{
+            {
                 {0, 0, 0, 0},
                 {4, 0, 0, 0},
                 {4, 4, 4, 0},
                 {0, 0, 0, 0}
-});
+            });
 
             klocki.Add(Pozycja.J2, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
             {
@@ -135,12 +135,12 @@ namespace PO_pierwsze_zajecia
                 {0, 4, 0, 0}
             });
             klocki.Add(Pozycja.L1, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
-{
+            {
                 {0, 0, 0, 0},
                 {0, 0, 5, 0},
                 {5, 5, 5, 0},
                 {0, 0, 0, 0}
-});
+            });
 
             klocki.Add(Pozycja.L2, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
             {
@@ -166,12 +166,12 @@ namespace PO_pierwsze_zajecia
                 {0, 5, 5, 0}
             });
             klocki.Add(Pozycja.I1, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
-{
+            {       
                 {0, 0, 0, 0},
                 {6, 6, 6, 6},
                 {0, 0, 0, 0},
                 {0, 0, 0, 0}
-});
+            });
 
             klocki.Add(Pozycja.I2, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
             {
@@ -197,12 +197,12 @@ namespace PO_pierwsze_zajecia
                 {0, 0, 6, 0}
             });
             klocki.Add(Pozycja.O1, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
-{
+            {
                 {0, 0, 0, 0},
                 {0, 7, 7, 0},
                 {0, 7, 7, 0},
                 {0, 0, 0, 0}
-});
+            });
 
             klocki.Add(Pozycja.O2, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
             {
