@@ -138,7 +138,7 @@ namespace PO_pierwsze_zajecia
                     ruch = Ruch.Prawo;
                     break;
                 case ConsoleKey.UpArrow:
-                    ruch = Ruch.ObrotLewo;
+                    ruch = Ruch.ObrotPrawo;
                     break;
                 case ConsoleKey.DownArrow:
                     ruch = Ruch.Dol;
@@ -370,9 +370,9 @@ namespace PO_pierwsze_zajecia
             Console.SetCursorPosition((plansza.tab.GetLength(0) + 5) * 2, NapisTetris.napisTetris.GetLength(0) + 7);
             Console.WriteLine("Dol - ↓");
             Console.SetCursorPosition((plansza.tab.GetLength(0) + 5) * 2, NapisTetris.napisTetris.GetLength(0) + 8);
-            Console.WriteLine("Obrot w prawo - X");
+            Console.WriteLine("Obrot w prawo - ↑ lub X");
             Console.SetCursorPosition((plansza.tab.GetLength(0) + 5) * 2, NapisTetris.napisTetris.GetLength(0) + 9);
-            Console.WriteLine("Obrot w lewo - ↑ lub Z");
+            Console.WriteLine("Obrot w lewo - Z");
             Console.SetCursorPosition((plansza.tab.GetLength(0) + 5) * 2, NapisTetris.napisTetris.GetLength(0) + 11);
             Console.WriteLine("Wcisnij dowolny klawisz aby zaczac");
 
