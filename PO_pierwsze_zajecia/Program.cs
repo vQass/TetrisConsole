@@ -8,15 +8,15 @@ namespace PO_pierwsze_zajecia
         {
             bool dostepnyKlocek = false;
             bool gra = true;
-            bool mozliwyRuch = true; // zmienna potrzebna do poprawnego dzialania metody UsunKlocek
             int czas = 0;
             int wymaganyCzas = 500;
             int punkty = 0;
+            int wartoscZwracanegoCzasu = 0;
             Ruch ruch = Ruch.Stoj;
             Pozycja pozycja;
             Klocek klocek = new Klocek();
             Plansza plansza = new Plansza(10, 20);
-            
+
             Gra.InicjalizacjaPlanszy(plansza);
             TablicaKsztaltow.InicjalizacjaTablicyBlokow();
             CyfryDoOdliczania.InicjalizacjaTablicyCyfr();
@@ -24,7 +24,7 @@ namespace PO_pierwsze_zajecia
 
             while (true)
             {
-                if(gra)
+                if (gra)
                 {
                     Wyswietlanie.WyswietlTlo(plansza);
                     Wyswietlanie.WyswietlDodatkoweInformacje(plansza);
@@ -44,42 +44,56 @@ namespace PO_pierwsze_zajecia
                     if (Console.KeyAvailable)
                     {
                         ruch = Gra.AkcjaGracza();
-                        if (mozliwyRuch)
-                        {
-                            switch(ruch)
+                            switch (ruch)
                             {
                                 case Ruch.Lewo:
                                 case Ruch.Prawo:
                                 case Ruch.Dol:
-                                    if(Kolizje.KolizjaBoki(klocek, plansza, ruch))
+                                    if (Kolizje.KolizjaBoki(klocek, plansza, ruch))
+                                    {
                                         Gra.RuchKlocka(klocek, ruch, ref wymaganyCzas);
+                                        Wyswietlanie.UsunKlocek(klocek, plansza);
+                                        Wyswietlanie.WyswietlKlocek(klocek, plansza);
+                                    }
                                     break;
                                 case Ruch.ObrotLewo:
                                 case Ruch.ObrotPrawo:
                                     if (Kolizje.KolizjaObrot(klocek, plansza, ruch))
+                                    {
                                         Gra.ObrotKlocka(klocek, ruch);
+                                        Wyswietlanie.UsunKlocek(klocek, plansza);
+                                        Wyswietlanie.WyswietlKlocek(klocek, plansza);
+                                    }
                                     break;
                             }
-  
-                        }
+
+
                     }
                     else
                     {
                         wymaganyCzas = 500;
                     }
 
-                    Wyswietlanie.UsunKlocek(klocek, plansza);
-                    Wyswietlanie.WyswietlKlocek(klocek, plansza);
-                    System.Threading.Thread.Sleep(50);
+                    // liczenie czasu w sposob asynchroniczny
+                    var watek = new System.Threading.Thread(() =>
+                    {
+                        System.Threading.Thread.Sleep(50);
+                        wartoscZwracanegoCzasu = 50; // wartosc zwracana
+                     });
+                    watek.Start();
+                    watek.Join();
+                    czas += wartoscZwracanegoCzasu;
+                    wartoscZwracanegoCzasu = 0;
 
-                    czas += 50;
+
                     if (czas >= wymaganyCzas)
                     {
-                        mozliwyRuch = false;
                         czas = 0;
                         if (Kolizje.KolizjaDol(klocek, plansza))
                         {
                             Gra.OpadanieKlocka(klocek);
+                            Wyswietlanie.UsunKlocek(klocek, plansza);
+                            Wyswietlanie.WyswietlKlocek(klocek, plansza);
                         }
                         else
                         {
@@ -93,12 +107,8 @@ namespace PO_pierwsze_zajecia
                         }
                         gra = Gra.KoniecGry(plansza);
                     }
-                    else
-                    {
-                        mozliwyRuch = true;
-                    }
                 }
-                if(!gra)
+                if (!gra)
                 {
                     Wyswietlanie.WyswietlKoniecGry(plansza);
                 }

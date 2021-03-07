@@ -144,7 +144,7 @@ namespace PO_pierwsze_zajecia
                         Console.BackgroundColor = ConsoleColor.Black;
                     }
                 }
-                Console.SetCursorPosition(0, plansza.tab.GetLength(1));
+                Console.SetCursorPosition(0, plansza.tab.GetLength(1) + 1);
                 Console.BackgroundColor = ConsoleColor.Black;
             }
         }
@@ -164,7 +164,7 @@ namespace PO_pierwsze_zajecia
                         Console.Write("  ");
                     }
                 }
-                Console.SetCursorPosition(0, plansza.tab.GetLength(1));
+                Console.SetCursorPosition(0, plansza.tab.GetLength(1) + 1);
                 Console.BackgroundColor = ConsoleColor.Black;
             }
         }
