@@ -13,18 +13,24 @@ namespace PO_pierwsze_zajecia
             int wymaganyCzas = 500;
             int punkty = 0;
             Ruch ruch = Ruch.Stoj;
-            Plansza plansza = new Plansza(10, 20);
-            Gra.Inicjalizacja(plansza);
-            TablicaKsztaltow.WypelnijTablice();
-            Gra.WyswietlTlo(plansza);
-            Gra.WyswietlPlansze(plansza);
-            Gra.WyswietlDodatkoweInformacje(plansza);
             Pozycja pozycja;
             Klocek klocek = new Klocek();
-            Console.ReadKey(true);
-            Gra.UsunNapisDowolnyKlawisz(plansza);
+            Plansza plansza = new Plansza(10, 20);
+            
+            Gra.InicjalizacjaPlanszy(plansza);
+            TablicaKsztaltow.InicjalizacjaTablicyBlokow();
+            CyfryDoOdliczania.InicjalizacjaTablicyCyfr();
+
+
             while (true)
             {
+                if(gra)
+                {
+                    Wyswietlanie.WyswietlTlo(plansza);
+                    Wyswietlanie.WyswietlDodatkoweInformacje(plansza);
+                    Wyswietlanie.CzekajNaReakcjeGracza(plansza);
+                    Wyswietlanie.WyswietlPlansze(plansza);
+                }
                 while (gra)
                 {
                     if (!dostepnyKlocek)
@@ -32,7 +38,7 @@ namespace PO_pierwsze_zajecia
                         pozycja = Gra.WylosujKlocek();
                         dostepnyKlocek = true;
                         klocek = new Klocek(plansza, pozycja);
-                        Gra.WyswietlKlocek(klocek, plansza);
+                        Wyswietlanie.WyswietlKlocek(klocek, plansza);
                     }
 
                     if (Console.KeyAvailable)
@@ -45,12 +51,12 @@ namespace PO_pierwsze_zajecia
                                 case Ruch.Lewo:
                                 case Ruch.Prawo:
                                 case Ruch.Dol:
-                                    if(Gra.KolizjaBoki(klocek, plansza, ruch))
+                                    if(Kolizje.KolizjaBoki(klocek, plansza, ruch))
                                         Gra.RuchKlocka(klocek, ruch, ref wymaganyCzas);
                                     break;
                                 case Ruch.ObrotLewo:
                                 case Ruch.ObrotPrawo:
-                                    if (Gra.KolizjaObrot(klocek, plansza, ruch))
+                                    if (Kolizje.KolizjaObrot(klocek, plansza, ruch))
                                         Gra.ObrotKlocka(klocek, ruch);
                                     break;
                             }
@@ -62,8 +68,8 @@ namespace PO_pierwsze_zajecia
                         wymaganyCzas = 500;
                     }
 
-                    Gra.UsunKlocek(klocek, plansza);
-                    Gra.WyswietlKlocek(klocek, plansza);
+                    Wyswietlanie.UsunKlocek(klocek, plansza);
+                    Wyswietlanie.WyswietlKlocek(klocek, plansza);
                     System.Threading.Thread.Sleep(50);
 
                     czas += 50;
@@ -71,7 +77,7 @@ namespace PO_pierwsze_zajecia
                     {
                         mozliwyRuch = false;
                         czas = 0;
-                        if (Gra.KolizjaDol(klocek, plansza))
+                        if (Kolizje.KolizjaDol(klocek, plansza))
                         {
                             Gra.OpadanieKlocka(klocek);
                         }
@@ -81,8 +87,8 @@ namespace PO_pierwsze_zajecia
                             dostepnyKlocek = false;
                             if (Gra.SprawdzLinie(plansza, ref punkty))
                             {
-                                Gra.WyswietlPlansze(plansza);
-                                Gra.AktualizacjaPunktow(plansza, punkty);
+                                Wyswietlanie.WyswietlPlansze(plansza);
+                                Wyswietlanie.AktualizacjaPunktow(plansza, punkty);
                             }
                         }
                         gra = Gra.KoniecGry(plansza);
@@ -92,15 +98,10 @@ namespace PO_pierwsze_zajecia
                         mozliwyRuch = true;
                     }
                 }
-                Console.SetCursorPosition(0, 0);
-                Gra.WyswietlTlo(plansza);
-                string napisKoncaGry = "Game Over!";
-                Console.SetCursorPosition((2 +  plansza.tab.GetLength(0) - napisKoncaGry.Length / 2) , plansza.tab.GetLength(1) / 2);
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine(napisKoncaGry);
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ReadKey();
+                if(!gra)
+                {
+                    Wyswietlanie.WyswietlKoniecGry(plansza);
+                }
             }
         }
     }

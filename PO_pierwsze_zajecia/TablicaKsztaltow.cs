@@ -8,7 +8,7 @@ namespace PO_pierwsze_zajecia
     {
         public static Dictionary<Pozycja, int[,]> klocki = new Dictionary<Pozycja, int[,]>();
 
-        public static void WypelnijTablice()
+        public static void InicjalizacjaTablicyBlokow()
         {
             klocki.Add(Pozycja.T1, new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU]
             {
