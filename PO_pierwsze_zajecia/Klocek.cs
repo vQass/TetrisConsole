@@ -16,9 +16,9 @@ namespace PO_pierwsze_zajecia
         private Pozycja _pozycja = Pozycja.T1;  
         public Pozycja poprzedniaPozycja = Pozycja.T1;   
         private int _rogTablicyX = 0;   
-        private int _rogTablicyY = 0;   
+        private int _rogTablicyY = -3;   
         public int poprzedniRogTablicyX = 0;
-        public int poprzedniRogTablicyY = 0;
+        public int poprzedniRogTablicyY = -3;
         public Klocek(Plansza plansza, Pozycja pozycja)
         {
             RogTablicyX = plansza.tab.GetLength(0) / 2 - Klocek.ROZMIAR_BLOKU / 2;

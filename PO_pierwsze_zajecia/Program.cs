@@ -6,6 +6,7 @@ namespace PO_pierwsze_zajecia
     {
         static void Main(string[] args)
         {
+            bool mozliwyRuch = true;
             bool dostepnyKlocek = false;
             bool gra = true;
             int czas = 0;
@@ -16,11 +17,11 @@ namespace PO_pierwsze_zajecia
             Pozycja pozycja;
             Klocek klocek = new Klocek();
             Plansza plansza = new Plansza(10, 20);
-
+            //PlanszaDoUsuniecia.NadpiszPlansze(plansza);
             Gra.InicjalizacjaPlanszy(plansza);
             TablicaKsztaltow.InicjalizacjaTablicyBlokow();
             CyfryDoOdliczania.InicjalizacjaTablicyCyfr();
-
+            Console.CursorVisible = false;
 
             while (true)
             {
@@ -28,20 +29,30 @@ namespace PO_pierwsze_zajecia
                 {
                     Wyswietlanie.WyswietlTlo(plansza);
                     Wyswietlanie.WyswietlDodatkoweInformacje(plansza);
-                    Wyswietlanie.CzekajNaReakcjeGracza(plansza);
+                    //Wyswietlanie.CzekajNaReakcjeGracza(plansza);
                     Wyswietlanie.WyswietlPlansze(plansza);
                 }
                 while (gra)
                 {
                     if (!dostepnyKlocek)
                     {
-                        pozycja = Gra.WylosujKlocek();
+                        pozycja = Gra.WylosujKlocek(); //L1, J1, Z1, S1, O1 sie wpierdala
                         dostepnyKlocek = true;
                         klocek = new Klocek(plansza, pozycja);
-                        Wyswietlanie.WyswietlKlocek(klocek, plansza);
+                        for (int i = 0; i < 2; i++)
+                        {
+                            if(Kolizje.KolizjaDol(klocek, plansza))
+                            {
+                                Gra.OpadanieKlocka(klocek);
+                            }
+                            else
+                                break;
+
+                        }
+                            Wyswietlanie.WyswietlKlocek(klocek, plansza);
                     }
 
-                    if (Console.KeyAvailable)
+                    if (Console.KeyAvailable && mozliwyRuch)
                     {
                         ruch = Gra.AkcjaGracza();
                             switch (ruch)
@@ -61,7 +72,7 @@ namespace PO_pierwsze_zajecia
                                     if (Kolizje.KolizjaObrot(klocek, plansza, ruch))
                                     {
                                         Gra.ObrotKlocka(klocek, ruch);
-                                        Wyswietlanie.UsunKlocek(klocek, plansza);
+                                    Wyswietlanie.UsunKlocek(klocek, plansza);
                                         Wyswietlanie.WyswietlKlocek(klocek, plansza);
                                     }
                                     break;
@@ -77,8 +88,8 @@ namespace PO_pierwsze_zajecia
                     // liczenie czasu w sposob asynchroniczny
                     var watek = new System.Threading.Thread(() =>
                     {
-                        System.Threading.Thread.Sleep(50);
-                        wartoscZwracanegoCzasu = 50; // wartosc zwracana
+                        System.Threading.Thread.Sleep(25);
+                        wartoscZwracanegoCzasu = 25; // wartosc zwracana
                      });
                     watek.Start();
                     watek.Join();
@@ -94,6 +105,7 @@ namespace PO_pierwsze_zajecia
                             Gra.OpadanieKlocka(klocek);
                             Wyswietlanie.UsunKlocek(klocek, plansza);
                             Wyswietlanie.WyswietlKlocek(klocek, plansza);
+                            //mozliwyRuch = false;
                         }
                         else
                         {
@@ -104,9 +116,16 @@ namespace PO_pierwsze_zajecia
                                 Wyswietlanie.WyswietlPlansze(plansza);
                                 Wyswietlanie.AktualizacjaPunktow(plansza, punkty);
                             }
+                            else
+                            {
+                                gra = Gra.SprawdzCzyCalyKlocekNaPlanszy(klocek);
+                                if (!gra)
+                                    Wyswietlanie.PrzejscieKoniecGry(plansza);
+                            }
                         }
-                        gra = Gra.KoniecGry(plansza);
                     }
+                    else
+                        mozliwyRuch = true;
                 }
                 if (!gra)
                 {

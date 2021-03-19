@@ -99,7 +99,7 @@ namespace PO_pierwsze_zajecia
             {
                 for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
                 {
-                    if (temp[j, i] != 0)
+                    if (temp[j, i] != 0 && (klocek.RogTablicyY + j) >= 0)
                     {
                         plansza.tab[klocek.RogTablicyX + i, klocek.RogTablicyY + j] = temp[j, i];
                     }
@@ -211,6 +211,29 @@ namespace PO_pierwsze_zajecia
             }
             return !koniecGry;
         }
+
+        public static bool SprawdzCzyCalyKlocekNaPlanszy(Klocek klocek)
+        {
+            int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
+            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
+            for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
+            {
+                for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
+                {
+                    //if (temp[j, i] != 0 && klocek.RogTablicyY + i < 0)
+                    //{
+                    //    return false;
+                    //}
+                    if (temp[i, j] != 0)
+                    {
+                        if(klocek.RogTablicyY + i < 0)
+                            return false;
+                    }
+                }
+            }
+            return true;
+        }
+
     }
 
 

@@ -23,18 +23,22 @@ namespace PO_pierwsze_zajecia
                             {
                                 wysokoscSprawdzania = klocek.RogTablicyY + i;
                                 szerokoscSprawdzania = klocek.RogTablicyX + j - 1;
-                                if (j + klocek.RogTablicyX == 0 || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+                                // przerobic zeby sprawdzac kolizje ze scianami jesli jest ponad plansza xDDDDD
+                                if (j + klocek.RogTablicyX == 0)
                                 {
                                     return false;
                                 }
-
-                                //sprawdzanie kolizji krok po kroku
-                                //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
-                                //Console.BackgroundColor = ConsoleColor.Cyan;
-                                //Console.WriteLine("  ");
-                                //System.Threading.Thread.Sleep(50);
-                                break;
-
+                                if (wysokoscSprawdzania >= 0)
+                                {
+                                    if (plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+                                        return false;
+                                    //sprawdzanie kolizji krok po kroku
+                                    //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
+                                    //Console.BackgroundColor = ConsoleColor.Cyan;
+                                    //Console.WriteLine("  ");
+                                    //System.Threading.Thread.Sleep(50);
+                                    //break;
+                                }
                             }
                         }
                     }
@@ -48,18 +52,21 @@ namespace PO_pierwsze_zajecia
                             {
                                 wysokoscSprawdzania = klocek.RogTablicyY + i;
                                 szerokoscSprawdzania = klocek.RogTablicyX + j + 1;
-                                if (j + klocek.RogTablicyX + 1 == plansza.tab.GetLength(0) || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+                                if (j + klocek.RogTablicyX + 1 == plansza.tab.GetLength(0))
                                 {
                                     return false;
                                 }
-
-                                //sprawdzanie kolizji krok po kroku
-                                //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
-                                //Console.BackgroundColor = ConsoleColor.Cyan;
-                                //Console.WriteLine("  ");
-                                //System.Threading.Thread.Sleep(50);
+                                if (wysokoscSprawdzania >= 0)
+                                {
+                                    if (plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+                                        return false;
+                                    //sprawdzanie kolizji krok po kroku
+                                    //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
+                                    //Console.BackgroundColor = ConsoleColor.Cyan;
+                                    //Console.WriteLine("  ");
+                                    //System.Threading.Thread.Sleep(50);
+                                }
                                 break;
-
                             }
                         }
                     }
@@ -81,9 +88,18 @@ namespace PO_pierwsze_zajecia
                     {
                         wysokoscSprawdzania = klocek.RogTablicyY + i + 1;
                         szerokoscSprawdzania = klocek.RogTablicyX + j;
-                        if (wysokoscSprawdzania == plansza.tab.GetLength(1) || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+
+                        if (wysokoscSprawdzania >= 0)
                         {
-                            return false;
+                            //sprawdzanie kolizji krok po kroku
+                            //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
+                            //Console.BackgroundColor = ConsoleColor.Cyan;
+                            //Console.WriteLine("  ");
+                            //System.Threading.Thread.Sleep(1000);
+                            if (wysokoscSprawdzania == plansza.tab.GetLength(1) || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -122,13 +138,16 @@ namespace PO_pierwsze_zajecia
                     {
                         wysokoscSprawdzania = klocek.RogTablicyY + i;
                         szerokoscSprawdzania = klocek.RogTablicyX + j;
-                        if (wysokoscSprawdzania >= plansza.tab.GetLength(1) || szerokoscSprawdzania >= plansza.tab.GetLength(0) || szerokoscSprawdzania <= -1 || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
-                            return false;
-                        //sprawdzanie kolizji krok po kroku
-                        //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
-                        //Console.BackgroundColor = ConsoleColor.Cyan;
-                        //Console.Write("  ");
-                        //System.Threading.Thread.Sleep(1000);
+                        if (wysokoscSprawdzania >= 0)
+                        {
+                            if (wysokoscSprawdzania >= plansza.tab.GetLength(1) || szerokoscSprawdzania >= plansza.tab.GetLength(0) || szerokoscSprawdzania <= -1 || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+                                return false;
+                            //sprawdzanie kolizji krok po kroku
+                            //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
+                            //Console.BackgroundColor = ConsoleColor.Cyan;
+                            //Console.Write("  ");
+                            //System.Threading.Thread.Sleep(1000);
+                        }
                     }
                 }
             }

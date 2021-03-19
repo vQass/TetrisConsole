@@ -107,6 +107,7 @@ namespace PO_pierwsze_zajecia
 
         public static void WyswietlKlocek(Klocek klocek, Plansza plansza)
         {
+            int wysokoscWyswietlania;
             int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
             TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
             for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
@@ -115,33 +116,37 @@ namespace PO_pierwsze_zajecia
                 {
                     if (temp[j, i] != 0)
                     {
-                        Console.SetCursorPosition((klocek.RogTablicyX + i + 1) * 2, klocek.RogTablicyY + j);
-                        switch (temp[j, i])
+                        wysokoscWyswietlania = klocek.RogTablicyY + j;
+                        if(wysokoscWyswietlania >= 0)
                         {
-                            case 1:
-                                Console.BackgroundColor = ConsoleColor.DarkMagenta;
-                                break;
-                            case 2:
-                                Console.BackgroundColor = ConsoleColor.DarkGreen;
-                                break;
-                            case 3:
-                                Console.BackgroundColor = ConsoleColor.DarkRed;
-                                break;
-                            case 4:
-                                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                                break;
-                            case 5:
-                                Console.BackgroundColor = ConsoleColor.DarkYellow;
-                                break;
-                            case 6:
-                                Console.BackgroundColor = ConsoleColor.DarkCyan;
-                                break;
-                            case 7:
-                                Console.BackgroundColor = ConsoleColor.Yellow;
-                                break;
+                            Console.SetCursorPosition((klocek.RogTablicyX + i + 1) * 2, wysokoscWyswietlania);
+                            switch (temp[j, i])
+                            {
+                                case 1:
+                                    Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                                    break;
+                                case 2:
+                                    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                                    break;
+                                case 3:
+                                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                                    break;
+                                case 4:
+                                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                                    break;
+                                case 5:
+                                    Console.BackgroundColor = ConsoleColor.DarkYellow;
+                                    break;
+                                case 6:
+                                    Console.BackgroundColor = ConsoleColor.DarkCyan;
+                                    break;
+                                case 7:
+                                    Console.BackgroundColor = ConsoleColor.Yellow;
+                                    break;
+                            }
+                            Console.Write("  ");
+                            Console.BackgroundColor = ConsoleColor.Black;
                         }
-                        Console.Write("  ");
-                        Console.BackgroundColor = ConsoleColor.Black;
                     }
                 }
                 Console.SetCursorPosition(0, plansza.tab.GetLength(1) + 1);
@@ -151,6 +156,7 @@ namespace PO_pierwsze_zajecia
 
         public static void UsunKlocek(Klocek klocek, Plansza plansza)
         {
+            int wysokoscUsuwania;
             int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
             TablicaKsztaltow.klocki.TryGetValue(klocek.poprzedniaPozycja, out temp);
             for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
@@ -159,9 +165,13 @@ namespace PO_pierwsze_zajecia
                 {
                     if (temp[j, i] != 0)
                     {
-                        Console.SetCursorPosition((klocek.poprzedniRogTablicyX + i + 1) * 2, klocek.poprzedniRogTablicyY + j);
-                        Console.BackgroundColor = ConsoleColor.Gray;
-                        Console.Write("  ");
+                        wysokoscUsuwania = klocek.poprzedniRogTablicyY + j;
+                        if(wysokoscUsuwania >= 0)
+                        {
+                            Console.SetCursorPosition((klocek.poprzedniRogTablicyX + i + 1) * 2, wysokoscUsuwania);
+                            Console.BackgroundColor = ConsoleColor.Gray;
+                            Console.Write("  ");
+                        }
                     }
                 }
                 Console.SetCursorPosition(0, plansza.tab.GetLength(1) + 1);
@@ -227,6 +237,35 @@ namespace PO_pierwsze_zajecia
             Console.WriteLine(napisKoncaGry);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ReadKey();
+        }
+
+        public static void PrzejscieKoniecGry(Plansza plansza)
+        {
+            //od dolu
+            Console.BackgroundColor = ConsoleColor.Gray;
+            for (int i = plansza.tab.GetLength(1) - 1; i >= 0; i--)
+            {
+                Console.SetCursorPosition(2, i);
+                for (int j = 0; j < plansza.tab.GetLength(0); j++)
+                {
+                    Console.Write("  ");
+                }
+                Console.WriteLine();
+                System.Threading.Thread.Sleep(50);
+            }
+            //od gory
+            Console.BackgroundColor = ConsoleColor.DarkGray;
+            for (int i = 0; i < plansza.tab.GetLength(1); i++)
+            {
+                Console.SetCursorPosition(2, i);
+                for (int j = 0; j < plansza.tab.GetLength(0); j++)
+                {
+                    Console.Write("  ");
+                }
+                Console.WriteLine();
+                System.Threading.Thread.Sleep(50);
+            }
+            Console.BackgroundColor = ConsoleColor.Black;
         }
     }
 }
