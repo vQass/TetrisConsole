@@ -6,6 +6,7 @@ namespace PO_pierwsze_zajecia
     {
         static void Main(string[] args)
         {
+            //usuwanie linii nie dziala
             bool mozliwyRuch = true;
             bool dostepnyKlocek = false;
             bool gra = true;
@@ -16,9 +17,8 @@ namespace PO_pierwsze_zajecia
             Ruch ruch = Ruch.Stoj;
             Pozycja pozycja;
             Klocek klocek = new Klocek();
-            Plansza plansza = new Plansza(10, 20);
+            Plansza plansza = new Plansza(10, 23, 3);
             //PlanszaDoUsuniecia.NadpiszPlansze(plansza);
-            Gra.InicjalizacjaPlanszy(plansza);
             TablicaKsztaltow.InicjalizacjaTablicyBlokow();
             CyfryDoOdliczania.InicjalizacjaTablicyCyfr();
             Console.CursorVisible = false;
@@ -29,14 +29,14 @@ namespace PO_pierwsze_zajecia
                 {
                     Wyswietlanie.WyswietlTlo(plansza);
                     Wyswietlanie.WyswietlDodatkoweInformacje(plansza);
-                    //Wyswietlanie.CzekajNaReakcjeGracza(plansza);
+                    Wyswietlanie.CzekajNaReakcjeGracza(plansza);
                     Wyswietlanie.WyswietlPlansze(plansza);
                 }
                 while (gra)
                 {
                     if (!dostepnyKlocek)
                     {
-                        pozycja = Gra.WylosujKlocek(); //L1, J1, Z1, S1, O1 sie wpierdala
+                        pozycja = Gra.WylosujKlocek();
                         dostepnyKlocek = true;
                         klocek = new Klocek(plansza, pozycja);
                         for (int i = 0; i < 2; i++)
@@ -116,12 +116,9 @@ namespace PO_pierwsze_zajecia
                                 Wyswietlanie.WyswietlPlansze(plansza);
                                 Wyswietlanie.AktualizacjaPunktow(plansza, punkty);
                             }
-                            else
-                            {
-                                gra = Gra.SprawdzCzyCalyKlocekNaPlanszy(klocek);
+                                gra = Gra.SprawdzCzyKoniecGry(plansza);
                                 if (!gra)
                                     Wyswietlanie.PrzejscieKoniecGry(plansza);
-                            }
                         }
                     }
                     else

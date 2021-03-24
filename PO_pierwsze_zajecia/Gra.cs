@@ -8,17 +8,6 @@ namespace PO_pierwsze_zajecia
 {
     class Gra
     {
-        public static void InicjalizacjaPlanszy(Plansza plansza)
-        {
-            for (int i = 0; i < plansza.tab.GetLength(1); i++)
-            {
-                for (int j = 0; j < plansza.tab.GetLength(0); j++)
-                {
-                    plansza.tab[j, i] = 0;
-                }
-            }
-        }
-
         public static Ruch AkcjaGracza()
         {
             Ruch ruch = new Ruch();
@@ -99,9 +88,9 @@ namespace PO_pierwsze_zajecia
             {
                 for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
                 {
-                    if (temp[j, i] != 0 && (klocek.RogTablicyY + j) >= 0)
+                    if (temp[j, i] != 0 && (klocek.RogTablicyY + j + plansza.IleLiniiNiewidocznych) >= 0)
                     {
-                        plansza.tab[klocek.RogTablicyX + i, klocek.RogTablicyY + j] = temp[j, i];
+                        plansza.tab[klocek.RogTablicyX + i, klocek.RogTablicyY + j + plansza.IleLiniiNiewidocznych] = temp[j, i];
                     }
                 }
             }
@@ -112,11 +101,12 @@ namespace PO_pierwsze_zajecia
             int ileLiniiUsunieto = 0;
             bool pelnaLinia = true;
             bool usunietoLinie = false;
-            for (int i = plansza.tab.GetLength(1) - 1; i >= 0; i--)
+            for (int i = plansza.Wysokosc - 1; i >= 0; i--)
             {
-                for (int j = 0; j < plansza.tab.GetLength(0); j++)
+                pelnaLinia = true;
+                for (int j = 0; j < plansza.Szerokosc; j++)
                 {
-                    pelnaLinia = true;
+                    //pelnaLinia = true;
                     if (plansza.tab[j, i] == 0)
                     {
                         pelnaLinia = false;
@@ -132,7 +122,7 @@ namespace PO_pierwsze_zajecia
                     usunietoLinie = true;
                     for (int j = i; j > 0; j--)
                     {
-                        for (int k = 0; k < plansza.tab.GetLength(0); k++)
+                        for (int k = 0; k < plansza.Szerokosc; k++)
                         {
                             plansza.tab[k, j] = plansza.tab[k, j - 1];
                         }
@@ -212,26 +202,47 @@ namespace PO_pierwsze_zajecia
             return !koniecGry;
         }
 
-        public static bool SprawdzCzyCalyKlocekNaPlanszy(Klocek klocek)
+        public static bool SprawdzCzyKoniecGry(Plansza plansza)
         {
-            int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
-            for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
+            for (int i = 0; i < plansza.Szerokosc; i++)
             {
-                for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
-                {
-                    //if (temp[j, i] != 0 && klocek.RogTablicyY + i < 0)
-                    //{
-                    //    return false;
-                    //}
-                    if (temp[i, j] != 0)
-                    {
-                        if(klocek.RogTablicyY + i < 0)
-                            return false;
-                    }
-                }
+                if (plansza.tab[i, plansza.IleLiniiNiewidocznych - 1] != 0)
+                    return false;
             }
             return true;
+        }
+
+        public static ConsoleColor ZwrocKolor(int liczba)
+        {
+            ConsoleColor kolor = ConsoleColor.Black;
+            switch (liczba)
+            {
+                case 0:
+                    kolor = ConsoleColor.Gray;
+                    break;
+                case 1:
+                    kolor = ConsoleColor.DarkMagenta;
+                    break;
+                case 2:
+                    kolor = ConsoleColor.DarkGreen;
+                    break;
+                case 3:
+                    kolor = ConsoleColor.DarkRed;
+                    break;
+                case 4:
+                    kolor = ConsoleColor.DarkBlue;
+                    break;
+                case 5:
+                    kolor = ConsoleColor.DarkYellow;
+                    break;
+                case 6:
+                    kolor = ConsoleColor.DarkCyan;
+                    break;
+                case 7:
+                    kolor = ConsoleColor.Yellow;
+                    break;
+            }
+            return kolor;
         }
 
     }

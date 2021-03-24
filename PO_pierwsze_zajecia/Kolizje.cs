@@ -21,7 +21,7 @@ namespace PO_pierwsze_zajecia
                         {
                             if (temp[i, j] != 0)
                             {
-                                wysokoscSprawdzania = klocek.RogTablicyY + i;
+                                wysokoscSprawdzania = klocek.RogTablicyY + i + plansza.IleLiniiNiewidocznych;
                                 szerokoscSprawdzania = klocek.RogTablicyX + j - 1;
                                 // przerobic zeby sprawdzac kolizje ze scianami jesli jest ponad plansza xDDDDD
                                 if (j + klocek.RogTablicyX == 0)
@@ -50,7 +50,7 @@ namespace PO_pierwsze_zajecia
                         {
                             if (temp[i, j] != 0)
                             {
-                                wysokoscSprawdzania = klocek.RogTablicyY + i;
+                                wysokoscSprawdzania = klocek.RogTablicyY + i + plansza.IleLiniiNiewidocznych;
                                 szerokoscSprawdzania = klocek.RogTablicyX + j + 1;
                                 if (j + klocek.RogTablicyX + 1 == plansza.tab.GetLength(0))
                                 {
@@ -96,7 +96,7 @@ namespace PO_pierwsze_zajecia
                             //Console.BackgroundColor = ConsoleColor.Cyan;
                             //Console.WriteLine("  ");
                             //System.Threading.Thread.Sleep(1000);
-                            if (wysokoscSprawdzania == plansza.tab.GetLength(1) || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+                            if (wysokoscSprawdzania == plansza.Wysokosc - plansza.IleLiniiNiewidocznych || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania + plansza.IleLiniiNiewidocznych] != 0)
                             {
                                 return false;
                             }
@@ -140,7 +140,7 @@ namespace PO_pierwsze_zajecia
                         szerokoscSprawdzania = klocek.RogTablicyX + j;
                         if (wysokoscSprawdzania >= 0)
                         {
-                            if (wysokoscSprawdzania >= plansza.tab.GetLength(1) || szerokoscSprawdzania >= plansza.tab.GetLength(0) || szerokoscSprawdzania <= -1 || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania] != 0)
+                            if (wysokoscSprawdzania >= (plansza.Wysokosc - plansza.IleLiniiNiewidocznych) || szerokoscSprawdzania >= plansza.Szerokosc || szerokoscSprawdzania <= -1 || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania + plansza.IleLiniiNiewidocznych] != 0)
                                 return false;
                             //sprawdzanie kolizji krok po kroku
                             //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
