@@ -23,9 +23,9 @@ namespace PO_pierwsze_zajecia
 
         public static void WyswietlPlansze(Plansza plansza)
         {
-            for (int i = 0; i < plansza.Wysokosc - plansza.IleLiniiNiewidocznych ; i++)
+            for (int i = plansza.IleLiniiNiewidocznych; i < plansza.Wysokosc; i++)
             {
-                Console.SetCursorPosition(2, i);
+                Console.SetCursorPosition(2, i - plansza.IleLiniiNiewidocznych);
                 for (int j = 0; j < plansza.Szerokosc; j++)
                 {
                     Console.BackgroundColor = Gra.ZwrocKolor(plansza.tab[j, i]);
@@ -97,7 +97,7 @@ namespace PO_pierwsze_zajecia
                         }
                     }
                 }
-                Console.SetCursorPosition(0, plansza.Wysokosc + 1);
+                Console.SetCursorPosition(0, plansza.Wysokosc + 1 - plansza.IleLiniiNiewidocznych);
                 Console.BackgroundColor = ConsoleColor.Black;
             }
         }
@@ -122,7 +122,7 @@ namespace PO_pierwsze_zajecia
                         }
                     }
                 }
-                Console.SetCursorPosition(0, plansza.Wysokosc + 1);
+                Console.SetCursorPosition(0, plansza.Wysokosc + 1 - plansza.IleLiniiNiewidocznych);
                 Console.BackgroundColor = ConsoleColor.Black;
             }
         }
