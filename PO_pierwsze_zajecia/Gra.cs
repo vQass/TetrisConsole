@@ -8,6 +8,8 @@ namespace PO_pierwsze_zajecia
 {
     class Gra
     {
+        private static List<Tetromino> tetrominos = new List<Tetromino>();
+
         public static Ruch AkcjaGracza()
         {
             Ruch ruch = new Ruch();
@@ -43,7 +45,7 @@ namespace PO_pierwsze_zajecia
             return ruch;
         }
 
-        public static void RuchKlocka(Klocek klocek, Ruch ruch, ref int wymaganyCzas)
+        public static void RuchKlocka(Tetromino klocek, Ruch ruch, ref int wymaganyCzas)
         {
             switch (ruch)
             {
@@ -61,32 +63,39 @@ namespace PO_pierwsze_zajecia
             }
         }
 
-        public static void ObrotKlocka(Klocek klocek, Ruch ruch)
+        public static Pozycja ZwrocObrotKlocka(Tetromino klocek, Ruch ruch)
         {
+            Pozycja nowaPozycja = klocek.Pozycja;
             switch (ruch)
             {
                 case Ruch.ObrotLewo:
-                    if ((int)klocek.Pozycja % 4 == 3)
-                        klocek.Pozycja -= 3;
+                    if ((int)nowaPozycja == 3)
+                        nowaPozycja = 0;
                     else
-                        klocek.Pozycja++;
+                        nowaPozycja++;
                     break;
                 case Ruch.ObrotPrawo:
-                    if ((int)klocek.Pozycja % 4 == 0)
-                        klocek.Pozycja += 3;
+                    if ((int)nowaPozycja == 0)
+                        nowaPozycja += 3;
                     else
-                        klocek.Pozycja--;
+                        nowaPozycja--;
                     break;
             }
+            return nowaPozycja;
         }
 
-        public static void DodajKlocekDoPlanszy(Klocek klocek, Plansza plansza)
+        public static void ObrotKlocka(Tetromino klocek, Pozycja pozycja)
         {
-            int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
-            for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
+            klocek.Pozycja = pozycja;
+        }
+
+        public static void DodajKlocekDoPlanszy(Tetromino klocek, Plansza plansza)
+        {
+            int[,] temp = new int[((ITablica)klocek).Rozmiar, ((ITablica)klocek).Rozmiar];
+            ((ITablica)klocek).Tab.TryGetValue(klocek.Pozycja, out temp);
+            for (int i = 0; i < ((ITablica)klocek).Rozmiar; i++)
             {
-                for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
+                for (int j = 0; j < ((ITablica)klocek).Rozmiar; j++)
                 {
                     if (temp[j, i] != 0 && (klocek.RogTablicyY + j + plansza.IleLiniiNiewidocznych) >= 0)
                     {
@@ -153,42 +162,30 @@ namespace PO_pierwsze_zajecia
             }
         }
 
-        public static void OpadanieKlocka(Klocek klocek)
+        public static void OpadanieKlocka(Tetromino klocek)
         {
 
             klocek.RogTablicyY++;
         }
 
-        public static Pozycja WylosujKlocek()
+        public static Tetromino WylosujKlocek(Plansza plansza)
         {
-            Pozycja pozycja = Pozycja.T1;
-            Random rnd = new Random((int)DateTime.Now.Ticks);
-            int losowa = rnd.Next(1, 8);
-            switch (losowa)
+            if(tetrominos.Count == 0)
             {
-                case 1:
-                    pozycja = Pozycja.T1;
-                    break;
-                case 2:
-                    pozycja = Pozycja.S1;
-                    break;
-                case 3:
-                    pozycja = Pozycja.Z1;
-                    break;
-                case 4:
-                    pozycja = Pozycja.J1;
-                    break;
-                case 5:
-                    pozycja = Pozycja.L1;
-                    break;
-                case 6:
-                    pozycja = Pozycja.I1;
-                    break;
-                case 7:
-                    pozycja = Pozycja.O1;
-                    break;
+                tetrominos.Add(new KlocekT(plansza));
+                tetrominos.Add(new KlocekS(plansza));
+                tetrominos.Add(new KlocekZ(plansza));
+                tetrominos.Add(new KlocekJ(plansza));
+                tetrominos.Add(new KlocekL(plansza));
+                tetrominos.Add(new KlocekI(plansza));
+                tetrominos.Add(new KlocekO(plansza));
             }
-            return pozycja;
+
+            Random rnd = new Random((int)DateTime.Now.Ticks);
+            int losowa = rnd.Next(0, tetrominos.Count);
+            Tetromino temp = tetrominos[losowa];
+            tetrominos.RemoveAt(losowa);
+            return temp;
         }
 
         public static bool KoniecGry(Plansza plansza)

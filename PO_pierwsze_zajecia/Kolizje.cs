@@ -6,24 +6,23 @@ namespace PO_pierwsze_zajecia
 {
     class Kolizje
     {
-        public static bool KolizjaBoki(Klocek klocek, Plansza plansza, Ruch ruch)
+        public static bool KolizjaBoki(Tetromino klocek, Plansza plansza, Ruch ruch)
         {
-            int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
+            int[,] temp = new int[((ITablica)klocek).Rozmiar, ((ITablica)klocek).Rozmiar];
+            ((ITablica)klocek).Tab.TryGetValue(klocek.Pozycja, out temp);
             int wysokoscSprawdzania;
             int szerokoscSprawdzania;
             switch (ruch)
             {
                 case Ruch.Lewo:
-                    for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
+                    for (int i = 0; i < ((ITablica)klocek).Rozmiar; i++)
                     {
-                        for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
+                        for (int j = 0; j < ((ITablica)klocek).Rozmiar; j++)
                         {
                             if (temp[i, j] != 0)
                             {
                                 wysokoscSprawdzania = klocek.RogTablicyY + i + plansza.IleLiniiNiewidocznych;
                                 szerokoscSprawdzania = klocek.RogTablicyX + j - 1;
-                                // przerobic zeby sprawdzac kolizje ze scianami jesli jest ponad plansza xDDDDD
                                 if (j + klocek.RogTablicyX == 0)
                                 {
                                     return false;
@@ -44,9 +43,9 @@ namespace PO_pierwsze_zajecia
                     }
                     break;
                 case Ruch.Prawo:
-                    for (int i = Klocek.ROZMIAR_BLOKU - 1; i >= 0; i--)
+                    for (int i = ((ITablica)klocek).Rozmiar - 1; i >= 0; i--)
                     {
-                        for (int j = Klocek.ROZMIAR_BLOKU - 1; j >= 0; j--)
+                        for (int j = ((ITablica)klocek).Rozmiar - 1; j >= 0; j--)
                         {
                             if (temp[i, j] != 0)
                             {
@@ -74,15 +73,16 @@ namespace PO_pierwsze_zajecia
             }
             return true;
         }
-        public static bool KolizjaDol(Klocek klocek, Plansza plansza)
+        public static bool KolizjaDol(Tetromino klocek, Plansza plansza)
         {
-            int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
+
+            int[,] temp = new int[((ITablica)klocek).Rozmiar, ((ITablica)klocek).Rozmiar];
+            ((ITablica)klocek).Tab.TryGetValue(klocek.Pozycja, out temp);
             int wysokoscSprawdzania;
             int szerokoscSprawdzania;
-            for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
+            for (int i = 0; i < ((ITablica)klocek).Rozmiar; i++)
             {
-                for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
+                for (int j = 0; j < ((ITablica)klocek).Rozmiar; j++)
                 {
                     if (temp[i, j] != 0)
                     {
@@ -107,32 +107,17 @@ namespace PO_pierwsze_zajecia
             return true;
         }
 
-        public static bool KolizjaObrot(Klocek klocek, Plansza plansza, Ruch ruch)
+        public static bool KolizjaObrot(Tetromino klocek, Plansza plansza, Ruch ruch)
         {
-            Pozycja nastepnaPozycja = klocek.Pozycja;
-            switch (ruch)
-            {
-                case Ruch.ObrotLewo:
-                    if ((int)nastepnaPozycja % 4 == 3)
-                        nastepnaPozycja -= 3;
-                    else
-                        nastepnaPozycja++;
-                    break;
-                case Ruch.ObrotPrawo:
-                    if ((int)nastepnaPozycja % 4 == 0)
-                        nastepnaPozycja += 3;
-                    else
-                        nastepnaPozycja--;
-                    break;
-            }
-            int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            TablicaKsztaltow.klocki.TryGetValue(nastepnaPozycja, out temp);
+            Pozycja nastepnaPozycja = Gra.ZwrocObrotKlocka(klocek, ruch);
+            int[,] temp = new int[((ITablica)klocek).Rozmiar, ((ITablica)klocek).Rozmiar];
+            ((ITablica)klocek).Tab.TryGetValue(nastepnaPozycja, out temp);
             int wysokoscSprawdzania = klocek.RogTablicyY;
             int szerokoscSprawdzania = klocek.RogTablicyX;
 
-            for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
+            for (int i = 0; i < ((ITablica)klocek).Rozmiar; i++)
             {
-                for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
+                for (int j = 0; j < ((ITablica)klocek).Rozmiar; j++)
                 {
                     if (temp[i, j] != 0)
                     {

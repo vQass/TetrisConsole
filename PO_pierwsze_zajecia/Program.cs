@@ -6,7 +6,6 @@ namespace PO_pierwsze_zajecia
     {
         static void Main(string[] args)
         {
-            //usuwanie linii nie dziala
             bool mozliwyRuch = true;
             bool dostepnyKlocek = false;
             bool gra = true;
@@ -16,10 +15,10 @@ namespace PO_pierwsze_zajecia
             int wartoscZwracanegoCzasu = 0;
             Ruch ruch = Ruch.Stoj;
             Pozycja pozycja;
-            Klocek klocek = new Klocek();
+            Tetromino klocek = null;
             Plansza plansza = new Plansza(10, 23, 3);
             //PlanszaDoUsuniecia.NadpiszPlansze(plansza);
-            TablicaKsztaltow.InicjalizacjaTablicyBlokow();
+            //TablicaKsztaltow.InicjalizacjaTablicyBlokow();
             CyfryDoOdliczania.InicjalizacjaTablicyCyfr();
             Console.CursorVisible = false;
 
@@ -36,9 +35,9 @@ namespace PO_pierwsze_zajecia
                 {
                     if (!dostepnyKlocek)
                     {
-                        pozycja = Gra.WylosujKlocek();
+
                         dostepnyKlocek = true;
-                        klocek = new Klocek(plansza, pozycja);
+                        klocek = Gra.WylosujKlocek(plansza);
                         for (int i = 0; i < 2; i++)
                         {
                             if(Kolizje.KolizjaDol(klocek, plansza))
@@ -71,7 +70,7 @@ namespace PO_pierwsze_zajecia
                                 case Ruch.ObrotPrawo:
                                     if (Kolizje.KolizjaObrot(klocek, plansza, ruch))
                                     {
-                                        Gra.ObrotKlocka(klocek, ruch);
+                                        Gra.ObrotKlocka(klocek, Gra.ZwrocObrotKlocka(klocek, ruch));
                                     Wyswietlanie.UsunKlocek(klocek, plansza);
                                         Wyswietlanie.WyswietlKlocek(klocek, plansza);
                                     }

@@ -76,14 +76,14 @@ namespace PO_pierwsze_zajecia
             }
         }
 
-        public static void WyswietlKlocek(Klocek klocek, Plansza plansza)
+        public static void WyswietlKlocek(Tetromino klocek, Plansza plansza)
         {
             int wysokoscWyswietlania;
-            int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            TablicaKsztaltow.klocki.TryGetValue(klocek.Pozycja, out temp);
-            for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
+            int[,] temp = new int[((ITablica)klocek).Rozmiar, ((ITablica)klocek).Rozmiar];
+            ((ITablica)klocek).Tab.TryGetValue(klocek.Pozycja, out temp);
+            for (int i = 0; i < ((ITablica)klocek).Rozmiar; i++)
             {
-                for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
+                for (int j = 0; j < ((ITablica)klocek).Rozmiar; j++)
                 {
                     if (temp[j, i] != 0)
                     {
@@ -102,14 +102,14 @@ namespace PO_pierwsze_zajecia
             }
         }
 
-        public static void UsunKlocek(Klocek klocek, Plansza plansza)
+        public static void UsunKlocek(Tetromino klocek, Plansza plansza)
         {
             int wysokoscUsuwania;
-            int[,] temp = new int[Klocek.ROZMIAR_BLOKU, Klocek.ROZMIAR_BLOKU];
-            TablicaKsztaltow.klocki.TryGetValue(klocek.poprzedniaPozycja, out temp);
-            for (int i = 0; i < Klocek.ROZMIAR_BLOKU; i++)
+            int[,] temp = new int[((ITablica)klocek).Rozmiar, ((ITablica)klocek).Rozmiar];
+            ((ITablica)klocek).Tab.TryGetValue(klocek.poprzedniaPozycja, out temp);
+            for (int i = 0; i < ((ITablica)klocek).Rozmiar; i++)
             {
-                for (int j = 0; j < Klocek.ROZMIAR_BLOKU; j++)
+                for (int j = 0; j < ((ITablica)klocek).Rozmiar; j++)
                 {
                     if (temp[j, i] != 0)
                     {

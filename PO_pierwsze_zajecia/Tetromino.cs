@@ -1,35 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace PO_pierwsze_zajecia
 {
-    enum Pozycja
-    {
-        T1,T2,T3,T4,S1,S2,S3,S4,Z1,Z2,Z3,Z4,J1,J2,J3,J4,L1,L2,L3,L4,I1,I2,I3,I4,O1,O2,O3,O4
-    }
 
-    class Klocek
+    public enum Pozycja
     {
-        public const int ROZMIAR_BLOKU = 4;   // rozmiar tablic blokow
-        private Pozycja _pozycja = Pozycja.T1;  
-        public Pozycja poprzedniaPozycja = Pozycja.T1;   
-        private int _rogTablicyX = 0;   
-        private int _rogTablicyY = -3;   
+        Pierwsza, Druga, Trzecia, Czwarta
+    }
+    class Tetromino
+    {
+        private Pozycja _pozycja = Pozycja.Pierwsza;
+        public Pozycja poprzedniaPozycja = Pozycja.Pierwsza;
+        private int _rogTablicyX = 0;
+        private int _rogTablicyY = -3;
         public int poprzedniRogTablicyX = 0;
         public int poprzedniRogTablicyY = -3;
-        public Klocek(Plansza plansza, Pozycja pozycja)
-        {
-            RogTablicyX = plansza.tab.GetLength(0) / 2 - Klocek.ROZMIAR_BLOKU / 2;
-            poprzedniRogTablicyX = plansza.tab.GetLength(0) / 2 - Klocek.ROZMIAR_BLOKU / 2;
-            Pozycja = pozycja;
-        }
-
-        public Klocek()
-        {
-
-        }
 
         public Pozycja Pozycja
         {
@@ -37,7 +24,7 @@ namespace PO_pierwsze_zajecia
 
             set
             {
-                poprzedniaPozycja = _pozycja; 
+                poprzedniaPozycja = _pozycja;
                 poprzedniRogTablicyX = RogTablicyX;
                 poprzedniRogTablicyY = RogTablicyY;
                 _pozycja = value;
@@ -68,6 +55,6 @@ namespace PO_pierwsze_zajecia
                 poprzedniRogTablicyY = RogTablicyY;
                 _rogTablicyY = value;
             }
-        }   
+        }
     }
 }
