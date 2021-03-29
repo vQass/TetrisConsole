@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PO_pierwsze_zajecia
 {
@@ -6,19 +7,20 @@ namespace PO_pierwsze_zajecia
     {
         static void Main(string[] args)
         {
-            bool mozliwyRuch = true;
+            bool klocekKolizja = false;
             bool dostepnyKlocek = false;
             bool gra = true;
             int czas = 0;
             int wymaganyCzas = 500;
             int punkty = 0;
             int wartoscZwracanegoCzasu = 0;
+            int obrotNumerTestu = 0;
             Ruch ruch = Ruch.Stoj;
-            Pozycja pozycja;
             Tetromino klocek = null;
             Plansza plansza = new Plansza(10, 23, 3);
-            //PlanszaDoUsuniecia.NadpiszPlansze(plansza);
-            //TablicaKsztaltow.InicjalizacjaTablicyBlokow();
+            WallKicksNonIShape wallKicksNonIShape = new WallKicksNonIShape();
+            WallKicksIShape wallKicksIShape = new WallKicksIShape();
+            //PlanszaDoUsuniecia.UzupelnijPlansze(plansza);
             CyfryDoOdliczania.InicjalizacjaTablicyCyfr();
             Console.CursorVisible = false;
 
@@ -38,9 +40,10 @@ namespace PO_pierwsze_zajecia
 
                         dostepnyKlocek = true;
                         klocek = Gra.WylosujKlocek(plansza);
-                        for (int i = 0; i < 2; i++)
+                        //klocek = new KlocekT(plansza); //do testowania wallkickow
+                        for (int i = 0; i < 3; i++)
                         {
-                            if(Kolizje.KolizjaDol(klocek, plansza))
+                            if (Kolizje.KolizjaDol(klocek, plansza))
                             {
                                 Gra.OpadanieKlocka(klocek);
                             }
@@ -48,36 +51,35 @@ namespace PO_pierwsze_zajecia
                                 break;
 
                         }
-                            Wyswietlanie.WyswietlKlocek(klocek, plansza);
+                        Wyswietlanie.WyswietlKlocek(klocek, plansza);
                     }
 
-                    if (Console.KeyAvailable && mozliwyRuch)
+                    if (Console.KeyAvailable)
                     {
                         ruch = Gra.AkcjaGracza();
-                            switch (ruch)
-                            {
-                                case Ruch.Lewo:
-                                case Ruch.Prawo:
-                                case Ruch.Dol:
-                                    if (Kolizje.KolizjaBoki(klocek, plansza, ruch))
-                                    {
-                                        Gra.RuchKlocka(klocek, ruch, ref wymaganyCzas);
-                                        Wyswietlanie.UsunKlocek(klocek, plansza);
-                                        Wyswietlanie.WyswietlKlocek(klocek, plansza);
-                                    }
-                                    break;
-                                case Ruch.ObrotLewo:
-                                case Ruch.ObrotPrawo:
-                                    if (Kolizje.KolizjaObrot(klocek, plansza, ruch))
-                                    {
-                                        Gra.ObrotKlocka(klocek, Gra.ZwrocObrotKlocka(klocek, ruch));
+                        switch (ruch)
+                        {
+                            case Ruch.Lewo:
+                            case Ruch.Prawo:
+                            case Ruch.Dol:
+                                if (Kolizje.KolizjaBoki(klocek, plansza, ruch))
+                                {
+                                    Gra.RuchKlocka(klocek, ruch, ref wymaganyCzas, klocekKolizja);
                                     Wyswietlanie.UsunKlocek(klocek, plansza);
-                                        Wyswietlanie.WyswietlKlocek(klocek, plansza);
-                                    }
-                                    break;
-                            }
-
-
+                                    Wyswietlanie.WyswietlKlocek(klocek, plansza);
+                                }
+                                break;
+                            case Ruch.ObrotLewo:
+                            case Ruch.ObrotPrawo:
+                                Pozycja nastepnaPozycja = Gra.ZwrocObrotKlocka(klocek, ruch);
+                                if (Kolizje.KolizjaObrot(klocek, plansza, Gra.ZwrocTabliceObroconegoKlocka(klocek, nastepnaPozycja), ref obrotNumerTestu, Gra.WyznaczTesty(klocek, nastepnaPozycja, ruch, wallKicksIShape, wallKicksNonIShape)))
+                                {
+                                    Gra.ObrotKlocka(klocek, plansza, Gra.ZwrocObrotKlocka(klocek, ruch), obrotNumerTestu, Gra.WyznaczTesty(klocek, nastepnaPozycja, ruch, wallKicksIShape, wallKicksNonIShape));
+                                    Wyswietlanie.WyswietlKlocek(klocek, plansza);
+                                }
+                                obrotNumerTestu = 0;
+                                break;
+                        }
                     }
                     else
                     {
@@ -89,7 +91,7 @@ namespace PO_pierwsze_zajecia
                     {
                         System.Threading.Thread.Sleep(25);
                         wartoscZwracanegoCzasu = 25; // wartosc zwracana
-                     });
+                    });
                     watek.Start();
                     watek.Join();
                     czas += wartoscZwracanegoCzasu;
@@ -101,27 +103,37 @@ namespace PO_pierwsze_zajecia
                         czas = 0;
                         if (Kolizje.KolizjaDol(klocek, plansza))
                         {
+                            klocekKolizja = false;
                             Gra.OpadanieKlocka(klocek);
                             Wyswietlanie.UsunKlocek(klocek, plansza);
                             Wyswietlanie.WyswietlKlocek(klocek, plansza);
-                            //mozliwyRuch = false;
                         }
                         else
                         {
-                            Gra.DodajKlocekDoPlanszy(klocek, plansza);
-                            dostepnyKlocek = false;
-                            if (Gra.SprawdzLinie(plansza, ref punkty))
+                            if (wymaganyCzas == 500)
                             {
-                                Wyswietlanie.WyswietlPlansze(plansza);
-                                Wyswietlanie.AktualizacjaPunktow(plansza, punkty);
-                            }
+                                Gra.DodajKlocekDoPlanszy(klocek, plansza);
+                                dostepnyKlocek = false;
+                                List<int> temp = Gra.SprawdzLinie(plansza);
+                                if (temp.Count > 0)
+                                {
+                                    Wyswietlanie.WyswietlUsuwaneLinie(plansza, temp);
+                                    Gra.UsunPelneLinie(plansza, temp);
+                                    Gra.Punktacja(temp.Count, ref punkty);
+                                    Wyswietlanie.WyswietlPlansze(plansza);
+                                    Wyswietlanie.AktualizacjaPunktow(plansza, punkty);
+                                }
                                 gra = Gra.SprawdzCzyKoniecGry(plansza);
                                 if (!gra)
                                     Wyswietlanie.PrzejscieKoniecGry(plansza);
+                            }
+                            else
+                            {
+                                wymaganyCzas = 500;
+                                klocekKolizja = true;
+                            }
                         }
                     }
-                    else
-                        mozliwyRuch = true;
                 }
                 if (!gra)
                 {

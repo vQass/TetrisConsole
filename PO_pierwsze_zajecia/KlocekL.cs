@@ -19,9 +19,9 @@ namespace PO_pierwsze_zajecia
 
             Tab.Add(Pozycja.Druga, new int[,]
             {
-                {5, 5, 0},
                 {0, 5, 0},
-                {0, 5, 0}
+                {0, 5, 0},
+                {0, 5, 5}
             });
 
             Tab.Add(Pozycja.Trzecia, new int[,]
@@ -33,9 +33,10 @@ namespace PO_pierwsze_zajecia
 
             Tab.Add(Pozycja.Czwarta, new int[,]
             {
+
+                {5, 5, 0},
                 {0, 5, 0},
-                {0, 5, 0},
-                {0, 5, 5}
+                {0, 5, 0}
             });
             int[,] temp;
             Tab.TryGetValue(Pozycja.Pierwsza, out temp);

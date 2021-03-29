@@ -45,7 +45,7 @@ namespace PO_pierwsze_zajecia
             return ruch;
         }
 
-        public static void RuchKlocka(Tetromino klocek, Ruch ruch, ref int wymaganyCzas)
+        public static void RuchKlocka(Tetromino klocek, Ruch ruch, ref int wymaganyCzas, bool klocekKolizja)
         {
             switch (ruch)
             {
@@ -56,7 +56,8 @@ namespace PO_pierwsze_zajecia
                     klocek.RogTablicyX++;
                     break;
                 case Ruch.Dol:
-                    wymaganyCzas = 50;
+                    if(!klocekKolizja)
+                        wymaganyCzas = 50;
                     break;
                 case Ruch.Stoj:
                     break;
@@ -68,13 +69,13 @@ namespace PO_pierwsze_zajecia
             Pozycja nowaPozycja = klocek.Pozycja;
             switch (ruch)
             {
-                case Ruch.ObrotLewo:
+                case Ruch.ObrotPrawo:
                     if ((int)nowaPozycja == 3)
                         nowaPozycja = 0;
                     else
                         nowaPozycja++;
                     break;
-                case Ruch.ObrotPrawo:
+                case Ruch.ObrotLewo:
                     if ((int)nowaPozycja == 0)
                         nowaPozycja += 3;
                     else
@@ -84,9 +85,12 @@ namespace PO_pierwsze_zajecia
             return nowaPozycja;
         }
 
-        public static void ObrotKlocka(Tetromino klocek, Pozycja pozycja)
+        public static void ObrotKlocka(Tetromino klocek, Plansza plansza, Pozycja pozycja, int obrotNumerTestu, int[,] testy)
         {
             klocek.Pozycja = pozycja;
+            Wyswietlanie.UsunKlocek(klocek, plansza);
+            klocek.RogTablicyY += +testy[obrotNumerTestu, 1];
+            klocek.RogTablicyX += testy[obrotNumerTestu, 0];
         }
 
         public static void DodajKlocekDoPlanszy(Tetromino klocek, Plansza plansza)
@@ -105,17 +109,19 @@ namespace PO_pierwsze_zajecia
             }
         }
 
-        public static bool SprawdzLinie(Plansza plansza, ref int punkty)
+        public static List<int> SprawdzLinie(Plansza plansza)
         {
-            int ileLiniiUsunieto = 0;
+
+            List<int> indeksy = new List<int>();
+            //int ileLiniiUsunieto = 0;
             bool pelnaLinia = true;
-            bool usunietoLinie = false;
+            //bool usunietoLinie = false;
             for (int i = plansza.Wysokosc - 1; i >= 0; i--)
             {
-                pelnaLinia = true;
+                //pelnaLinia = true;
                 for (int j = 0; j < plansza.Szerokosc; j++)
                 {
-                    //pelnaLinia = true;
+                    pelnaLinia = true;
                     if (plansza.tab[j, i] == 0)
                     {
                         pelnaLinia = false;
@@ -124,26 +130,32 @@ namespace PO_pierwsze_zajecia
                 }
                 if (pelnaLinia)
                 {
-                    ileLiniiUsunieto++;
-                }
-                if (pelnaLinia)
-                {
-                    usunietoLinie = true;
-                    for (int j = i; j > 0; j--)
-                    {
-                        for (int k = 0; k < plansza.Szerokosc; k++)
-                        {
-                            plansza.tab[k, j] = plansza.tab[k, j - 1];
-                        }
-                    }
-                    i++;
+                    indeksy.Add(i);
                 }
             }
-            Punktacja(ileLiniiUsunieto, ref punkty);
-            return usunietoLinie;
+            return indeksy;
         }
 
-        private static void Punktacja(int ileLiniiUsunieto, ref int punkty)
+        public static void UsunPelneLinie(Plansza plansza, List<int> indeksy)
+        {
+            //naprawic usuwanie 
+            for (int i = 0; i < indeksy.Count; i++)
+            {
+                //for (int j = indeksy[i] + i; j >= 0; j--)
+                //{
+                    for (int k = indeksy[i] + i; k > 0; k--)
+                    {
+
+                        for (int l = 0; l < plansza.Szerokosc; l++)
+                        {
+                            plansza.tab[l, k] = plansza.tab[l, k - 1];
+                        }
+                    }
+               // }
+            }
+        }
+
+        public static void Punktacja(int ileLiniiUsunieto, ref int punkty)
         {
             switch (ileLiniiUsunieto)
             {
@@ -170,7 +182,7 @@ namespace PO_pierwsze_zajecia
 
         public static Tetromino WylosujKlocek(Plansza plansza)
         {
-            if(tetrominos.Count == 0)
+            if (tetrominos.Count == 0)
             {
                 tetrominos.Add(new KlocekT(plansza));
                 tetrominos.Add(new KlocekS(plansza));
@@ -242,6 +254,32 @@ namespace PO_pierwsze_zajecia
             return kolor;
         }
 
+        public static int[,] WyznaczTesty(Tetromino klocek, Pozycja nastepnaPozycja, Ruch ruch, WallKicksIShape wallKicksIShape, WallKicksNonIShape wallKicksNonIShape)
+        {
+            int[,] tempTesty = new int[5, 2];
+            if (klocek is KlocekI)
+            {
+                if (ruch == Ruch.ObrotLewo)
+                    wallKicksIShape.ObrotWLewo.TryGetValue(nastepnaPozycja, out tempTesty);
+                else
+                    wallKicksIShape.ObrotWPrawo.TryGetValue(nastepnaPozycja, out tempTesty);
+            }
+            else
+            {
+                if (ruch == Ruch.ObrotLewo)
+                    wallKicksNonIShape.ObrotWLewo.TryGetValue(nastepnaPozycja, out tempTesty);
+                else
+                    wallKicksNonIShape.ObrotWPrawo.TryGetValue(nastepnaPozycja, out tempTesty);
+            }
+            return tempTesty;
+        }
+
+        public static int[,] ZwrocTabliceObroconegoKlocka(Tetromino klocek, Pozycja nastepnaPozycja)
+        {
+            int[,] temp = new int[((ITablica)klocek).Rozmiar, ((ITablica)klocek).Rozmiar];
+            ((ITablica)klocek).Tab.TryGetValue(nastepnaPozycja, out temp);
+            return temp;
+        }
     }
 
 
