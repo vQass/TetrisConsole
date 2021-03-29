@@ -20,7 +20,7 @@ namespace PO_pierwsze_zajecia
             Tab.Add(Pozycja.Druga, new int[,]
             {
                 {0, 1, 0},
-                {1, 1, 0},
+                {0, 1, 1},
                 {0, 1, 0}
             });
 
@@ -34,7 +34,7 @@ namespace PO_pierwsze_zajecia
             Tab.Add(Pozycja.Czwarta, new int[,]
             {
                 {0, 1, 0},
-                {0, 1, 1},
+                {1, 1, 0},
                 {0, 1, 0}
             });
             int[,] temp;

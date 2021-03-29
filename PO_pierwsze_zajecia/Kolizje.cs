@@ -107,11 +107,9 @@ namespace PO_pierwsze_zajecia
             return true;
         }
 
-        public static bool KolizjaObrot(Tetromino klocek, Plansza plansza, Ruch ruch)
+        public static bool KolizjaObrot(Tetromino klocek, Plansza plansza, int[,] tablicaKlocka, ref int obrotNumerTestu, int[,] testy)
         {
-            Pozycja nastepnaPozycja = Gra.ZwrocObrotKlocka(klocek, ruch);
-            int[,] temp = new int[((ITablica)klocek).Rozmiar, ((ITablica)klocek).Rozmiar];
-            ((ITablica)klocek).Tab.TryGetValue(nastepnaPozycja, out temp);
+
             int wysokoscSprawdzania = klocek.RogTablicyY;
             int szerokoscSprawdzania = klocek.RogTablicyX;
 
@@ -119,24 +117,52 @@ namespace PO_pierwsze_zajecia
             {
                 for (int j = 0; j < ((ITablica)klocek).Rozmiar; j++)
                 {
-                    if (temp[i, j] != 0)
+                    if (tablicaKlocka[i, j] != 0)
                     {
-                        wysokoscSprawdzania = klocek.RogTablicyY + i;
-                        szerokoscSprawdzania = klocek.RogTablicyX + j;
+                        wysokoscSprawdzania = klocek.RogTablicyY + i + testy[obrotNumerTestu, 1];
+                        szerokoscSprawdzania = klocek.RogTablicyX + j + testy[obrotNumerTestu, 0];
                         if (wysokoscSprawdzania >= 0)
                         {
                             if (wysokoscSprawdzania >= (plansza.Wysokosc - plansza.IleLiniiNiewidocznych) || szerokoscSprawdzania >= plansza.Szerokosc || szerokoscSprawdzania <= -1 || plansza.tab[szerokoscSprawdzania, wysokoscSprawdzania + plansza.IleLiniiNiewidocznych] != 0)
-                                return false;
+                            {
+                                if (obrotNumerTestu == testy.GetLength(0) - 1 || klocek is KlocekO)
+                                    return false;
+                                else
+                                {
+                                    obrotNumerTestu++;
+                                    return KolizjaObrot(klocek, plansza, tablicaKlocka, ref obrotNumerTestu, testy);
+                                }
+                            }
+
                             //sprawdzanie kolizji krok po kroku
                             //Console.SetCursorPosition((szerokoscSprawdzania + 1) * 2, wysokoscSprawdzania);
-                            //Console.BackgroundColor = ConsoleColor.Cyan;
+                            //switch (obrotNumerTestu)
+                            //{
+                            //    case 0:
+                            //        Console.BackgroundColor = ConsoleColor.Cyan;
+                            //        break;
+                            //    case 1:
+                            //        Console.BackgroundColor = ConsoleColor.Green;
+                            //        break;
+                            //    case 2:
+                            //        Console.BackgroundColor = ConsoleColor.Red;
+                            //        break;
+                            //    case 3:
+                            //        Console.BackgroundColor = ConsoleColor.Blue;
+                            //        break;
+                            //    case 4:
+                            //        Console.BackgroundColor = ConsoleColor.Magenta;
+                            //        break;
+                            //}
                             //Console.Write("  ");
-                            //System.Threading.Thread.Sleep(1000);
+                            //System.Threading.Thread.Sleep(200);
                         }
                     }
                 }
             }
             return true;
         }
+
+
     }
 }

@@ -214,5 +214,20 @@ namespace PO_pierwsze_zajecia
             }
             Console.BackgroundColor = ConsoleColor.Black;
         }
+
+        public static void WyswietlUsuwaneLinie(Plansza plansza, List<int> indeksy)
+        {
+            for (int i = 0; i < indeksy.Count; i++)
+            {
+                Console.SetCursorPosition(2, indeksy[i] - plansza.IleLiniiNiewidocznych);
+                for (int j = 0; j < plansza.Szerokosc; j++)
+                {
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.Write("  ");
+                }
+            }
+            Console.BackgroundColor = ConsoleColor.Black;
+            System.Threading.Thread.Sleep(250);
+        }
     }
 }
