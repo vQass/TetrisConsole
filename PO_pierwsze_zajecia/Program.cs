@@ -7,6 +7,7 @@ namespace PO_pierwsze_zajecia
     {
         static void Main(string[] args)
         {
+            Console.Title = "Tetris";
             bool klocekKolizja = false;
             bool dostepnyKlocek = false;
             bool gra = true;
